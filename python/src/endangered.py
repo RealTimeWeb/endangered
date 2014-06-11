@@ -289,7 +289,7 @@ def _fetch_endangeredSpecies_info(params):
     :param dict params: the parameters to pass to the server
     :returns: the JSON response object
     """
-    baseurl = 'http://think.cs.vt.edu/endangered2009'
+    baseurl = 'http://think.cs.vt.edu:5000/endangered2009'
     query = _urlencode(baseurl, params)
 
     if PYTHON_3:

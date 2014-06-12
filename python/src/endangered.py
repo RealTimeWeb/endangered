@@ -221,22 +221,32 @@ class EndangeredSpeciesException(Exception):
 # Domain Objects
 
 
-class EndangeredSpecies(object):
+class Country(object):
     """
     A EndangeredSpecies contains
     """
 
-    def __init__(self):
+    def __init__(self, amphibians=None, birds=None, country=None,
+                 fishes=None, iso=None, mammals=None, mollusks=None,
+                 other=None, plants=None, reptiles=None, total=None):
 
         """
-        Creates a new endangeredSpecies
-
-        :returns: EndangeredSpecies
+        Creates a new country
         """
-        raise NotImplementedError("Function Not Finished")
+        self.amphibians = amphibians
+        self.birds = birds
+        self.country = country
+        self.fishes = fishes
+        self.iso = iso
+        self.mammals = mammals
+        self.mollusks = mollusks
+        self.other = other
+        self.plants = plants
+        self.reptiles = reptiles
+        self.total = total
 
     def __unicode__(self):
-        raise NotImplementedError("Function Not Finished")
+        # TODO: Not sure what to do about this
         string = """ <EndangeredSpecies Field: Value> """
         return string.format()
 
@@ -257,23 +267,43 @@ class EndangeredSpecies(object):
         return string
 
     def _to_dict(self):
-        raise NotImplementedError("Function Not Finished")
+        return {'amphibians': self.amphibians, 'birds': self.birds,
+                'country': self.country, 'fishes': self.fishes, 'iso':
+                self.iso, 'mammals': self.mammals, 'mollusks': self.mollusks,
+                'other': self.other, 'plants': self.plants, 'reptiles':
+                self.reptiles, 'total': self.total}
 
     @staticmethod
     def _from_json(json_data):
         """
-        Creates a EndangeredSpecies from json data.
+        Creates a Country from json data.
 
         :param json_data: The raw json data to parse
         :type json_data: dict
-        :returns: EndangeredSpecies
+        :returns: Country
         """
-        raise NotImplementedError("Function Not Finished")
+
         if json_data is None:
-            return EndangeredSpecies()
+            return Country()
         try:
-            endangeredSpecies = EndangeredSpecies(NEED_PARAMS)
-            return endangeredSpecies
+            json_dict = json_data[0]
+            amphibians = json_dict['Amphibians']
+            birds = json_dict['Birds']
+            country = json_dict['Country']
+            fishes = json_dict['Fishes']
+            iso = json_dict['ISOcountrycode']
+            mammals = json_dict['Mammals']
+            mollusks = json_dict['Mollusks']
+            other = json_dict['OtherInverts']
+            plants = json_dict['Plants']
+            reptiles = json_dict['Reptiles']
+            total = json_dict['Total']
+            cntry = Country(amphibians=amphibians, birds=birds,
+                            country=country, fishes=fishes, iso=iso,
+                            mammals=mammals, mollusks=mollusks,
+                            other=other, plants=plants, reptiles=reptiles,
+                            total=total)
+            return cntry
         except KeyError:
             raise EndangeredSpeciesException(
                 "The given information was incomplete.")
@@ -334,5 +364,5 @@ def get_endangeredSpecies_information(query):
 
     params = {'where': query}
     json_res = _fetch_endangeredSpecies_info(params)
-    endangeredSpecies = EndangeredSpecies._from_json(json_res)
+    endangeredSpecies = Country._from_json(json_res)
     return endangeredSpecies._to_dict()
